@@ -1,0 +1,62 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+{% include 'common/head.html' %}
+
+<body class="sidebar-collapsed clear-cookie ">
+<!-- <body> -->
+    <div>
+
+        <!--BEGIN BACK TO TOP-->
+        <a id="totop" href="#"><i class="fa fa-angle-up"></i></a>
+        <!--END BACK TO TOP-->
+
+        {% include 'common/top_bar.html' %}
+
+        <div id="wrapper">
+
+            {% include 'common/side_bar.html' %}
+
+            {% include 'common/chat_form.html' %}
+
+            <!--BEGIN PAGE WRAPPER-->
+            <div id="page-wrapper">
+
+                {% include 'common/title_breadcrumb.html' %}
+
+                <!--BEGIN CONTENT-->
+                <div class="page-content">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="portlet box">
+                                <div class="portlet-body">
+                                    <div class="row mbm">
+                                        <div class="col-lg-12">
+                                            {% block content %}
+                                            {% endblock %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--END CONTENT-->
+
+            </div>
+            <!--END PAGE WRAPPER-->
+
+            {% include 'common/footer.html' %}
+            
+        </div>
+    </div>
+
+    {% include 'common/js.html' %}
+    {% block other_js %}
+    {% endblock %}
+
+</body>
+
+</html>

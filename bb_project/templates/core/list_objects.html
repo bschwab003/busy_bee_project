@@ -1,0 +1,72 @@
+{% extends 'layouts/layout_1.html' %}
+
+{% block content%}
+
+<div class="table-responsive">
+    <table id="table_id" class="table table-bordered table-striped table-hover">
+        <thead>
+            <tr>
+                {% for each in view.headers %}
+                    <th width="{{each.1}}%">{{each.0}}</th>
+                {% endfor %}
+                <th width="10%">Actions</th>
+            </tr>
+            <tbody>
+                {% for obj in object_list %}
+                    <tr>
+                        {% for each_field in obj.as_list|slice:"1:" %}
+                            <td>{{each_field}}</td>
+                        {% endfor %}
+                        <td>
+                            
+                            <div style="display: inline-block">
+                                <a href="/{{view.update_delete_url}}/{{each.0}}/update">
+                                    <button type="button" class="btn btn-default btn-xs">
+                                        <i class="fa fa-edit"></i>&nbsp;Edit
+                                    </button>
+                                </a>
+                                <a href="/{{view.update_delete_url}}/{{each.0}}/delete"
+                                    <button type="button" class="btn btn-default btn-xs">
+                                        <i class="fa fa-edit"></i>&nbsp;Delete
+                                    </button>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </thead>
+        
+    </table>
+</div>
+
+{% endblock %}
+
+{% block other_js %}
+
+<script>
+
+    $(function () {
+
+        var spinner = $( ".spinner" ).spinner();
+
+        var table = $('#table_id').dataTable({
+            "lengthMenu": [[25, 50, 100, -1], [25, 50, 100, "All"]]
+        });
+
+        var tableTools = new $.fn.dataTable.TableTools( table, {
+            "sSwfPath": "static/vendors/DataTables/extensions/TableTools/swf/copy_csv_xls_pdf.swf",
+            "buttons": [
+                "copy",
+                "csv",
+                "xls",
+                "pdf",
+                { "type": "print", "buttonText": "Print me!" }
+            ]
+        });
+        $(".DTTT_container").css("float","right");
+    });
+
+</script>
+
+{% endblock%}
