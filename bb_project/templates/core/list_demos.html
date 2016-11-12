@@ -1,0 +1,92 @@
+{% extends 'layouts/layout_1.html' %}
+
+{% block content%}
+
+<div class="table-responsive">
+    <table id="table_id" class="table table-bordered table-striped table-hover">
+        <thead>
+            <tr>
+                <th width="5px">ID</th>
+                <th width="20px">Region</th>
+                <th width="125px">Chain/Store Name</th>
+                <th width="200px">Address</th>
+                <th width="100px">Date/Time</th>
+                <th width="200px">Brand Ambassador</th>
+                <th width="10%">Actions</th>
+            </tr>
+            <tbody>
+                {% for obj in object_list %}
+                    <tr>
+                        <td>{{obj.id}}</td>
+                        <td>{{obj.store.region}}</td>
+                        <td>
+                            <div>
+                              <strong>{{obj.store.chain.name}}</strong>
+                            </div>
+                            {{obj.store.name}}
+                        </td>
+                        <td>
+                          <div>{{obj.store.address_1}} {{obj.store.address_2}}</div>
+                          <div>{{obj.store.city}}, {{obj.store.state}} {{obj.store.zip}}</div>
+                        </td>
+                        <td>
+                          <div>{{obj.date}}</div>
+                          <div>{{obj.start_time}} - {{obj.end_time}}</div>
+                        </td>
+                        <td>
+                          {{obj.brand_ambassador.name_first}} {{obj.brand_ambassador.name_last}}
+                        </td>
+                        <td>
+                            <div style="display: inline-block">
+                                <a href="/{{view.update_delete_url}}/{{obj.id}}/update">
+                                    <button type="button" class="btn btn-default btn-xs">
+                                        <i class="fa fa-edit"></i>&nbsp;Edit
+                                    </button>
+                                </a>
+                                <a href="/{{view.update_delete_url}}/{{obj.id}}/delete"
+                                    <button type="button" class="btn btn-default btn-xs">
+                                        <i class="fa fa-edit"></i>&nbsp;Delete
+                                    </button>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </thead>
+
+    </table>
+</div>
+
+{% endblock %}
+
+{% block other_js %}
+
+<script>
+
+    $(function () {
+
+        var spinner = $( ".spinner" ).spinner();
+
+        var table = $('#table_id').dataTable({
+            "lengthMenu": [[25, 50, 100, -1], [25, 50, 100, "All"]]
+        });
+
+        var tableTools = new $.fn.dataTable.TableTools( table, {
+            "sSwfPath": "static/vendors/DataTables/extensions/TableTools/swf/copy_csv_xls_pdf.swf",
+            "buttons": [
+                "copy",
+                "csv",
+                "xls",
+                "pdf",
+                { "type": "print", "buttonText": "Print me!" }
+            ]
+        });
+        $(".DTTT_container").css("float","right");
+    });
+
+    
+
+</script>
+
+{% endblock%}

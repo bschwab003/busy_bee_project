@@ -1,0 +1,171 @@
+{% extends 'layouts/layout_1.html' %}
+
+{% block content%}
+<form method="post"> {% csrf_token %}
+<table>
+    <tr>
+        <td style="width: 400px">
+            <strong>Select a Client:</strong><br>
+            <select id="select-client" style="width: 300px" name="client" onchange="client_changed()" class="form-control selectpicker"></select><br><br>
+        </td>
+        <td  style="width: 400px">
+            <strong>Select a Brand:</strong><br>
+            <select id="select-brand" style="width: 300px" name="brand" onchange="brand_changed()" class="form-control selectpicker"></select><br><br>
+        </td>
+    </tr>
+    <tr>
+        <td  style="width: 400px">
+            <strong>Select a Product:</strong><br>
+            <select multiple id="select-product" style="width: 300px" name="product" class="form-control selectpicker"></select><br><br>
+        </td>
+        <td  style="width: 400px">
+            <strong>Select a Demo Type:</strong><br>
+            <select id="select-demo-type" style="width: 300px" name="demo_type" class="form-control selectpicker">
+                {% for each in demo_types %}
+                    <option id="{{each.id}}">{{each.name}}</option>
+                {% endfor %}
+            </select><br><br>
+        </td>
+    </tr>
+</table>
+<hr>
+
+<strong>Select the Number of Demos:</strong><br><br>
+<div class="row">
+    <div class="col-lg-12">
+        <table id="table_id" class="table table-bordered table-striped table-hover">
+        <!-- <table class="table table-striped table-bordered table-hover" id="dt-table"> -->
+            <thead>
+                <tr>
+                    <th>Region</th>
+                    <th>Chain</th>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>City</th>
+                    <th>State</th>
+                    <th style="padding-left:8px; padding-right:8px"><input id="no-all" type="text" style="width: 50px" class="form-control" onkeyup="apply_to_all_changed(this)"></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>
+<input type="submit">
+</form>
+{% endblock %}
+
+{% block other_js %}
+<script>
+    var table;
+
+    // Function called when the brand is changed.
+    function brand_changed(){
+        var brand_id = $("#select-brand").val()
+
+        $.ajax({
+            url: "/ajax/dropdowns/brands/" + brand_id + "/products",
+            success: function (data) {
+                $("#select-product").empty()
+                $.each(data, function (i, v) {
+                    $("#select-product").append("<option value='" + v["id"] + "'>" + v["description"] + "</option>")
+                })
+            }
+        });
+    }
+
+    // Function called when the client is changed.
+    // Function will update the select-brands dropdown.
+    function client_changed(){
+        var client_id = $("#select-client").val()
+
+        $.ajax({
+            url: "/ajax/dropdowns/clients/" + client_id + "/brands",
+            success: function (data) {
+                $("#select-brand").empty()
+                $.each(data, function (i, v) {
+                    $("#select-brand").append("<option value='" + v["id"] + "'>" + v["name"] + "</option>")
+                })
+                brand_changed()
+            }
+        });
+    }
+
+
+    // Runs after page is loaded.
+    $(document).ready(function() {
+
+        // Initialize dataTable
+        table = $('#table_id').DataTable({
+
+            "ajax": {
+                "url": '/ajax/stores',
+                "dataSrc": ""
+            },
+
+            "columns": [
+                {"data": "region"},
+                {"data": "chain"},
+                {"data": "name"},
+                {"data": "address"},
+                {"data": "city"},
+                {"data": "state"},
+                {
+                    "data": "id",
+                    "orderable": false,
+                    "width": 5,
+                    "render": function(d){
+                        return '<input id="' + d + '" name="store_' + d + '" type="text" style="width: 50px" class="form-control">';
+                    }
+                }
+            ],
+
+            "deferRender": true,
+
+            "lengthMenu": [[25, 50, 75, -1], [25, 50, 75, "All"]],
+
+            "pageLength": 25
+
+        });
+
+        //Populate select-client drop down.
+        $.ajax({
+            url: "/ajax/dropdowns/clients",
+            success: function (data) {
+                $("#select-client").empty()
+                $("#select-client").append("<option></option>")
+                $.each(data, function (i, v) {
+                    $("#select-client").append("<option value='" + v["id"] + "'>" + v["name"] + "</option>")
+                })
+                $('#select-client.selectpicker').selectpicker('refresh');
+            }
+        });
+
+
+
+        //Populate select-demo-type drop down.
+        $.ajax({
+            url: "/ajax/dropdowns/demo_types",
+            success: function (data) {
+                $("#select-demo-type").empty()
+                $.each(data, function (i, v) {
+                    $("#select-demo-type").append("<option value='" + v["id"] + "'>" + v["name"] + "</option>")
+                })
+
+            }
+        });
+
+    });
+    $('.selectpicker').selectpicker();
+
+    function apply_to_all_changed(el){
+        var no = $(el).val()
+        var filtered_rows = table.rows({ filter : 'applied'}).nodes()
+        $('input[type="text"]', filtered_rows).val(no)
+    }
+
+
+</script>
+
+{% endblock%}

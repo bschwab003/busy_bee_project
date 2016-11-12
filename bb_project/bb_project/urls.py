@@ -19,7 +19,7 @@ from core.views import *
 from django.views.generic import *
 
 urlpatterns = [
-    
+
     url(r'^$', TemplateView.as_view(template_name='core/template.html')),
 
     # List URLs
@@ -44,6 +44,7 @@ urlpatterns = [
     url(r'^store_contacts/(?P<pk>\d+)/update$', UpdateStoreContact.as_view()),
 
     # Demos
+    url(r'^demos$', DemoList.as_view()),
     url(r'^schedule_demos/$', ScheduleDemos.as_view()),
 
     #Ajax Calls

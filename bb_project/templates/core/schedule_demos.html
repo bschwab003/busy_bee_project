@@ -6,21 +6,21 @@
     <tr>
         <td style="width: 400px">
             <strong>Select a Client:</strong><br>
-            <select id="select-client" style="width: 300px" name="client" onchange="client_changed()" class="form-control"></select><br><br>
+            <select id="select-client" style="width: 300px" name="client" onchange="client_changed()" class="form-control selectpicker"></select><br><br>
         </td>
         <td  style="width: 400px">
             <strong>Select a Brand:</strong><br>
-            <select id="select-brand" style="width: 300px" name="brand" onchange="brand_changed()" class="form-control"></select><br><br>
+            <select id="select-brand" style="width: 300px" name="brand" onchange="brand_changed()" class="form-control selectpicker"></select><br><br>
         </td>
     </tr>
     <tr>
         <td  style="width: 400px">
             <strong>Select a Product:</strong><br>
-            <select multiple id="select-product" style="width: 300px" name="product" class="form-control"></select><br><br>
+            <select multiple id="select-product" style="width: 300px" name="product" class="form-control selectpicker"></select><br><br>
         </td>
         <td  style="width: 400px">
             <strong>Select a Demo Type:</strong><br>
-            <select id="select-demo-type" style="width: 300px" name="demo_type" class="form-control">
+            <select id="select-demo-type" style="width: 300px" name="demo_type" class="form-control selectpicker">
                 {% for each in demo_types %}
                     <option id="{{each.id}}">{{each.name}}</option>
                 {% endfor %}
@@ -72,7 +72,7 @@
                     $("#select-product").append("<option value='" + v["id"] + "'>" + v["description"] + "</option>")
                 })
             }
-        }); 
+        });
     }
 
     // Function called when the client is changed.
@@ -95,16 +95,15 @@
 
     // Runs after page is loaded.
     $(document).ready(function() {
-        
 
         // Initialize dataTable
         table = $('#table_id').DataTable({
-            
+
             "ajax": {
                 "url": '/ajax/stores',
                 "dataSrc": ""
             },
-            
+
             "columns": [
                 {"data": "region"},
                 {"data": "chain"},
@@ -121,11 +120,11 @@
                     }
                 }
             ],
-            
+
             "deferRender": true,
 
             "lengthMenu": [[25, 50, 75, -1], [25, 50, 75, "All"]],
-            
+
             "pageLength": 25
 
         });
@@ -135,26 +134,40 @@
             url: "/ajax/dropdowns/clients",
             success: function (data) {
                 $("#select-client").empty()
-                $("#select-client").append("<option></option>")  
+                $("#select-client").append("<option></option>")
                 $.each(data, function (i, v) {
-                    $("#select-client").append("<option value='" + v["id"] + "'>" + v["name"] + "</option>")                    
+                    $("#select-client").append("<option value='" + v["id"] + "'>" + v["name"] + "</option>")
                 })
-
-
             }
         });
 
-        //Populate select-client drop down.
+        //Populate select-demo-type drop down.
         $.ajax({
             url: "/ajax/dropdowns/demo_types",
             success: function (data) {
-                $("#select-demo-type").empty() 
+                $("#select-demo-type").empty()
                 $.each(data, function (i, v) {
-                    $("#select-demo-type").append("<option value='" + v["id"] + "'>" + v["name"] + "</option>")                    
+                    $("#select-demo-type").append("<option value='" + v["id"] + "'>" + v["name"] + "</option>")
                 })
+
             }
         });
 
+        $("#select-client").select2({
+          theme: "bootstrap"
+        });
+
+        $("#select-brand").select2({
+          theme: "bootstrap"
+        });
+
+        $("#select-product").select2({
+          theme: "bootstrap"
+        });
+
+        $("#select-demo-type").select2({
+          theme: "bootstrap"
+        });
     });
 
     function apply_to_all_changed(el){
@@ -162,7 +175,7 @@
         var filtered_rows = table.rows({ filter : 'applied'}).nodes()
         $('input[type="text"]', filtered_rows).val(no)
     }
-        
+
 
 </script>
 

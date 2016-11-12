@@ -12,9 +12,6 @@ import json
 
 class DemoList(ListView):
 
-	headers = [
-		("Name",50),
-	]
 	queryset = Demo.objects.all()
 	template_name = 'core/list_demos.html'
 	title = "Demo Master"
@@ -28,7 +25,7 @@ class ScheduleDemos(TemplateView):
 	def post(self, request, *args, **kwargs):
 
 		client_id = request.POST.get("client", None)
-		brand_id = request.POST.get("brand", None)	
+		brand_id = request.POST.get("brand", None)
 		demo_type_id = request.POST.get("demo_type", None)
 		product_ids = request.POST.getlist("product", None)
 
@@ -65,6 +62,7 @@ class ClientList(ListView):
 	queryset = Client.objects.all()
 	template_name = 'core/list_objects.html'
 	title = "Client Master"
+	update_delete_url = "clients"
 
 class BrandList(ListView):
 
@@ -75,6 +73,7 @@ class BrandList(ListView):
 	queryset = Brand.objects.all()
 	template_name = 'core/list_objects.html'
 	title = "Brand Master"
+	update_delete_url = "brands"
 
 class BrandAmbassadorList(ListView):
 
@@ -101,7 +100,7 @@ class StoreList(ListView):
 		("City", 10),
 		("State", 5),
 		("Zip", 5),
-		
+
 	]
 	queryset = Store.objects.all()
 	template_name = 'core/list_objects.html'
@@ -160,7 +159,7 @@ class CreateStore(CreateView):
 	success_url = "/stores"
 
 class CreateStoreContact(CreateView):
-	
+
 	model = StoreContact
 	form_class = StoreContactForm
 	template_name = 'core/base_form.html'
@@ -189,7 +188,7 @@ class UpdateBrand(UpdateView):
 	success_url = "brands"
 
 class UpdateBrandAmbassador(UpdateView):
-	
+
 	model = BrandAmbassador
 	form_class = BrandAmbassadorForm
 	template_name = 'core/base_form.html'

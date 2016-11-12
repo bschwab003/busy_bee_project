@@ -9,7 +9,7 @@ $(function () {
     } );
 
     var tableTools = new $.fn.dataTable.TableTools( table, {
-    	"sSwfPath": "static/vendors/DataTables/extensions/TableTools/swf/copy_csv_xls_pdf.swf",
+    	"sSwfPath": "/static/vendors/DataTables/extensions/TableTools/swf/copy_csv_xls_pdf.swf",
         "buttons": [
             "copy",
             "csv",
@@ -20,5 +20,3 @@ $(function () {
     } );
     $(".DTTT_container").css("float","right");
 });
-
-

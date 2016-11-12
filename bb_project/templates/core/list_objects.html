@@ -18,14 +18,14 @@
                             <td>{{each_field}}</td>
                         {% endfor %}
                         <td>
-                            
+
                             <div style="display: inline-block">
-                                <a href="/{{view.update_delete_url}}/{{each.0}}/update">
+                                <a href="/{{view.update_delete_url}}/{{obj.id}}/update">
                                     <button type="button" class="btn btn-default btn-xs">
                                         <i class="fa fa-edit"></i>&nbsp;Edit
                                     </button>
                                 </a>
-                                <a href="/{{view.update_delete_url}}/{{each.0}}/delete"
+                                <a href="/{{view.update_delete_url}}/{{obj.id}}/delete"
                                     <button type="button" class="btn btn-default btn-xs">
                                         <i class="fa fa-edit"></i>&nbsp;Delete
                                     </button>
@@ -36,7 +36,7 @@
                 {% endfor %}
             </tbody>
         </thead>
-        
+
     </table>
 </div>
 

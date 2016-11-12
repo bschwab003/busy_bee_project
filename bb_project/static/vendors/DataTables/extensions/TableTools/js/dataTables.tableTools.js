@@ -2818,7 +2818,7 @@ var TableTools;
              * @namespace TableTools default settings for initialisation
              */
             TableTools.DEFAULTS = {
-                "sSwfPath": "../swf/copy_csv_xls_pdf.swf",
+                "sSwfPath": "/static/vendors/DataTables/extensions/TableTools/swf/copy_csv_xls_pdf.swf",
                 "sRowSelect": "none",
                 "sRowSelector": "tr",
                 "sSelectedClass": null,
@@ -2862,7 +2862,7 @@ var TableTools;
 
 
 // DataTables 1.10 API
-// 
+//
 // This will be extended in a big way in in TableTools 3 to provide API methods
 // such as rows().select() and rows.selected() etc, but for the moment the
 // tabletools() method simply returns the instance.
@@ -2959,4 +2959,3 @@ var TableTools;
 
 
 })(window, document);
-
